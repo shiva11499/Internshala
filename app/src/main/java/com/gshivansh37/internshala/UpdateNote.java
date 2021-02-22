@@ -21,13 +21,14 @@ import android.widget.EditText;
 public class UpdateNote extends Fragment {
 
     public interface UpdateEventListener {
-        public void updateEvent(String title, String info);
+        public void updateEvent(String title, String info, int pos);
     }
 
     UpdateNote.UpdateEventListener updateEventListener;
 
     private String title;
     private String noteData;
+    private int position;
 
     @Override
     public void onAttach(Context activity) {
@@ -39,10 +40,11 @@ public class UpdateNote extends Fragment {
         }
     }
 
-    public UpdateNote(String title, String noteData) {
+    public UpdateNote(String title, String noteData, int position) {
         // Required empty public constructor
         this.title = title;
         this.noteData = noteData;
+        this.position = position;
     }
 
     /**
@@ -54,8 +56,8 @@ public class UpdateNote extends Fragment {
      * @return A new instance of fragment UpdateNote.
      */
     // TODO: Rename and change types and number of parameters
-    public static UpdateNote newInstance(String param1, String param2) {
-        UpdateNote fragment = new UpdateNote(param1,param2);
+    public static UpdateNote newInstance(String param1, String param2, Integer pos) {
+        UpdateNote fragment = new UpdateNote(param1,param2, pos);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -90,8 +92,9 @@ public class UpdateNote extends Fragment {
         save_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateEventListener.updateEvent(et_title.getText().toString(), et_note.getText().toString());
-                getFragmentManager().beginTransaction().remove(UpdateNote.this).commit();
+                    updateEventListener.updateEvent(et_title.getText().toString(), et_note.getText().toString(), position);
+                    getFragmentManager().beginTransaction().remove(UpdateNote.this).commit();
+
             }
         });
     }

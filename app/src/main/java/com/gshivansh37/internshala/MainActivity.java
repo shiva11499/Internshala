@@ -8,13 +8,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -46,11 +50,10 @@ public class MainActivity extends AppCompatActivity implements AddNote.onSomeEve
         recyclerView.setAdapter(notesListAdapter);
 
 
-
-
-        notesListAdapter.setOnItemClickListener(new NotesListAdapter.OnItemClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
+                recyclerView, new ClickListener() {
             @Override
-            public void onItemClick(View itemView, int position) {
+            public void onClick(View view, final int position) {
                 String title = notes.get(position).getTitle();
                 String noteData = notes.get(position).getNoteData();
                 notes.remove(position);
@@ -58,32 +61,17 @@ public class MainActivity extends AppCompatActivity implements AddNote.onSomeEve
                 add_note.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.GONE);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.addnote_frag, new UpdateNote(title,noteData));
+                ft.replace(R.id.addnote_frag, new UpdateNote(title, noteData, position));
+                ft.addToBackStack(null);
                 ft.commit();
-
             }
-        });
 
-
-//            @Override
-//            public void onItemClick(int position, View v) {
-//                String title = notes.get(position).getTitle();
-//                String noteData = notes.get(position).getNoteData();
-//                notes.remove(position);
-//                notesListAdapter.notifyItemRemoved(position);
-//                add_note.setVisibility(View.GONE);
-//                recyclerView.setVisibility(View.GONE);
-//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//                ft.replace(R.id.addnote_frag, new UpdateNote(title,noteData));
-//                ft.commit();
-//
-//            }
-//
-//            @Override
-//            public void onItemLongClick(int position, View v) {
-//
-//            }
-//        });
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(MainActivity.this, "Long press on position :" + position,
+                        Toast.LENGTH_LONG).show();
+            }
+        }));
 
 
         add_note.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements AddNote.onSomeEve
                 add_note.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.GONE);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
                 ft.replace(R.id.addnote_frag, new AddNote());
                 ft.commit();
 
@@ -104,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements AddNote.onSomeEve
     @Override
     protected void onStart() {
         super.onStart();
+        add_note.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
 
     }
@@ -111,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements AddNote.onSomeEve
     @Override
     protected void onResume() {
         super.onResume();
+        add_note.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
     }
 
@@ -120,34 +111,81 @@ public class MainActivity extends AppCompatActivity implements AddNote.onSomeEve
         Log.d("Mera message", title);
         Log.d("Mera info", info);
         Fragment frag1 = getFragmentManager().findFragmentById(R.id.addnote_frag);
-        Note n = new Note(title,info);
-        notes.add(n);
+        Note n = new Note(title, info);
+        if(!title.matches("Title") && !info.matches("Note")) {
+            notes.add(n);
+        }
         add_note.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
         notesListAdapter.notifyDataSetChanged();
         getSupportActionBar().setTitle("Notes");
 
-
     }
+
 
     @Override
-    public void updateEvent(String title, String info) {
-//        Log.d("Mera message", title);
-//        Log.d("Mera info", info);
+    public void updateEvent(String title, String info, int pos) {
         Fragment frag1 = getFragmentManager().findFragmentById(R.id.addnote_frag);
-        Note n = new Note(title,info);
-        notes.add(n);
+        Note n = new Note(title, info);
+        notes.add(pos,n);
         add_note.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
         notesListAdapter.notifyDataSetChanged();
         getSupportActionBar().setTitle("Notes");
 
-
     }
 
-//    @Override
-//    public void someEvent(String s) {
-//        Fragment frag1 = getFragmentManager().findFragmentById(R.id.fragment1);
-//        ((TextView)frag1.getView().findViewById(R.id.textView)).setText("Text from Fragment 2:" + s);
-//    }
+
+
+    public static interface ClickListener {
+        public void onClick(View view, int position);
+
+        public void onLongClick(View view, int position);
+    }
+
+    class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private ClickListener clicklistener;
+        private GestureDetector gestureDetector;
+
+        public RecyclerTouchListener(Context context, final RecyclerView recycleView, final ClickListener clicklistener) {
+
+            this.clicklistener = clicklistener;
+            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = recycleView.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && clicklistener != null) {
+                        clicklistener.onLongClick(child, recycleView.getChildAdapterPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            if (child != null && clicklistener != null && gestureDetector.onTouchEvent(e)) {
+                clicklistener.onClick(child, rv.getChildAdapterPosition(child));
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
+
 }

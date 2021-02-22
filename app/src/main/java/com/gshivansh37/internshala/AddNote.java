@@ -106,8 +106,9 @@ public class AddNote extends Fragment {
         save_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                someEventListener.someEvent(et_title.getText().toString(), et_note.getText().toString());
-                getFragmentManager().beginTransaction().remove(AddNote.this).commit();
+                    someEventListener.someEvent(et_title.getText().toString(), et_note.getText().toString());
+                    getFragmentManager().beginTransaction().remove(AddNote.this).commit();
+
             }
         });
 

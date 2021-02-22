@@ -62,38 +62,20 @@ class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.ViewHolder>
 
         private final TextView noteTitle, noteData;
 
-        public ViewHolder(View itemview) {
-            super(itemview);
-            noteTitle = itemview.findViewById(R.id.et_title);
-            noteData = itemview.findViewById(R.id.et_note);
-
-            itemView.setOnClickListener(this);
-
-//            itemview.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (listener != null) {
-//                        int position = getLayoutPosition();
-//                        if (position != RecyclerView.NO_POSITION) {
-//                            listener.onItemClick(itemView, position);
-//                        }
-//                    }
-//                }
-//            });
-
+        public ViewHolder(View view) {
+            super(view);
+            noteTitle = view.findViewById(R.id.et_title);
+            noteData = view.findViewById(R.id.et_note);
         }
 
         @Override
         public void onClick(View v) {
-            if (listener != null) {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(itemView, position);
-                }
+
             }
         }
+
     }
 
 
 
-}
+
