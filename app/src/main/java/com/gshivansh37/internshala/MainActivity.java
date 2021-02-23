@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements AddNote.onSomeEve
 
     @Override
     public void updateEvent(String title, String info, int pos) {
-        Fragment frag1 = getFragmentManager().findFragmentById(R.id.addnote_frag);
         Note n = new Note(title, info);
         notes.add(pos,n);
         add_note.setVisibility(View.VISIBLE);
@@ -135,6 +134,23 @@ public class MainActivity extends AppCompatActivity implements AddNote.onSomeEve
 
     }
 
+    @Override
+    public void deleteNote(int pos) {
+//        notes.remove(pos);
+        add_note.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+        notesListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void backNote(String title, String info, int pos) {
+        Note n = new Note(title, info);
+        notes.add(pos,n);
+        add_note.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+        notesListAdapter.notifyDataSetChanged();
+
+    }
 
 
     public static interface ClickListener {

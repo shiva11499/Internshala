@@ -10,11 +10,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_constraint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
 
         <TextView
-            android:id="@+id/et_title"
-            android:layout_width="wrap_content"
+            android:id="@+id/frag_et_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Title"
@@ -30,8 +31,8 @@
             app:layout_constraintLeft_toLeftOf="parent"/>
 
         <TextView
-            android:id="@+id/et_note"
-            android:layout_width="wrap_content"
+            android:id="@+id/frag_et_note"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:autoLink="web|email"
@@ -44,20 +45,21 @@
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
             android:textCursorDrawable="@null"
-            app:layout_constraintTop_toBottomOf="@id/et_title"
-            app:layout_constraintLeft_toLeftOf="@id/et_title"/>
+            app:layout_constraintTop_toBottomOf="@id/frag_et_title"
+            app:layout_constraintLeft_toLeftOf="@id/frag_et_title"/>
 
-        <ImageView
-            android:id="@+id/image_cross"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/et_title"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/et_note"
-            android:src="@drawable/ic_baseline_clear_24"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/image_cross"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/frag_et_title"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/frag_et_note"-->
+<!--            android:src="@drawable/ic_baseline_clear_24"/>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 

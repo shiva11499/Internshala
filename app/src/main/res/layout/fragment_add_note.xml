@@ -47,15 +47,18 @@
             app:layout_constraintTop_toBottomOf="@id/et_title"
             app:layout_constraintLeft_toLeftOf="@id/et_title"/>
 
-        <Button
+        <ImageView
             android:id="@+id/save_note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:text="Save"
+            android:src="@drawable/check"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginBottom="140dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="50dp"
             />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
