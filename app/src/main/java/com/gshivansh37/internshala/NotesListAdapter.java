@@ -26,14 +26,6 @@ class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.ViewHolder>
     Onclick onclick;
     Context context;
 
-    private OnItemClickListener listener;
-    public interface OnItemClickListener {
-        void onItemClick(View itemView, int position);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
 
     NotesListAdapter(ArrayList<Note> notes) {
         this.notes = notes;

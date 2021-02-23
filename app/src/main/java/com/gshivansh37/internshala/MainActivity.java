@@ -87,32 +87,33 @@ public class MainActivity extends AppCompatActivity implements AddNote.onSomeEve
             }
         });
 
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        add_note.setVisibility(View.VISIBLE);
+//        recyclerView.setVisibility(View.VISIBLE);
+//
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        add_note.setVisibility(View.VISIBLE);
+//        recyclerView.setVisibility(View.VISIBLE);
+//    }
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        add_note.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.VISIBLE);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        add_note.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.VISIBLE);
-    }
 
 
     @Override
     public void someEvent(String title, String info) {
-        Log.d("Mera message", title);
-        Log.d("Mera info", info);
-        Fragment frag1 = getFragmentManager().findFragmentById(R.id.addnote_frag);
         Note n = new Note(title, info);
-        if(!title.matches("Title") && !info.matches("Note")) {
+        boolean flag = true;
+        if(title.matches("") && info.matches("")) {
+            flag = false;
+        }
+        if(flag) {
             notes.add(n);
         }
         add_note.setVisibility(View.VISIBLE);
